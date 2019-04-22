@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+group 'RR_Automation'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compile "org.testng:testng:6.3.1"
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.0'
+    compile group: 'org.json', name: 'json', version: '20180813'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.14.0'
+    compile 'org.apache.commons:commons-csv:1.6'
+    compile group: 'org.apache.poi', name: 'poi', version: '3.9'
+    compile group: 'org.apache.xmlbeans', name: 'xmlbeans', version: '2.6.0'
+    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.0'
+    compile group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.0.0'
+}
