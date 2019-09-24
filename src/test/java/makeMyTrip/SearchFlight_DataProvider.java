@@ -49,7 +49,7 @@ public class SearchFlight_DataProvider {
 	 * "Bangalore", "Delhi", "23-April-2020" }, { "Gwalior", "Mumbai",
 	 * "29-April-2020" } }; }
 	 */
-	
+
 	@DataProvider(name = "PassengerTravelInfoByPropertyFile")
 	public static Object[][] passengerTravelInfoByPropertyFile() {
 
@@ -65,11 +65,11 @@ public class SearchFlight_DataProvider {
 		String sourceCities = pro.getProperty("sourceCity");
 		String destinationCities = pro.getProperty("destinationCity");
 		String travelDates = pro.getProperty("travelDate");
-		
+
 		String sourceCitiesArray[] = sourceCities.split(",");
 		String destinationCitiesArray[] = destinationCities.split(",");
 		String travelDatesArray[] = travelDates.split(",");
-		
+
 		int rowSize = sourceCitiesArray.length;
 		String passengerInfo1[][] = new String[rowSize][3];
 

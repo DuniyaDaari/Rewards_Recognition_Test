@@ -1,22 +1,26 @@
 package makeMyTrip;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.joda.time.Days;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
 
 public class SearchFlight {
 
@@ -49,9 +53,8 @@ public class SearchFlight {
 		driver.navigate().refresh();
 
 	}
-	
-	
-	@Test
+
+	@Test(enabled = false)
 	public void searchFlight() throws Exception {
 		Thread.sleep(5000);
 		String sourceCity = getPropertyValue("sourceCity");
@@ -89,18 +92,15 @@ public class SearchFlight {
 		Date todaysDate = new Date();
 		System.out.println(formatter.format(todaysDate));
 
-		
-		 long diffInMillies = Math.abs(travelDepartDate.getTime() - todaysDate.getTime());
-		    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-		 
-		    
-		    
+		long diffInMillies = Math.abs(travelDepartDate.getTime() - todaysDate.getTime());
+		long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
 		if (todaysDate.compareTo(travelDepartDate) > 0) {
 			System.out.println("Date is disabled as travel date can not be selected before todays date.");
-		} else if(diff>365) {
-			System.out.println("Date is disabled as travel date can not be selected after one year of todays date.");	
+		} else if (diff > 365) {
+			System.out.println("Date is disabled as travel date can not be selected after one year of todays date.");
 		}
-		
+
 		else {
 			// Selection of year
 			if (currentYear.equals(expectedYear)) {
@@ -165,5 +165,31 @@ public class SearchFlight {
 			driver.findElement(By.xpath("//a[contains(text(),'Search')]")).click();
 		}
 
+	}
+
+	@Test
+	public void handlingWebTable() {
+		driver.navigate().to("https://www.toolsqa.com/automation-practice-table/");
+
+		List<WebElement> rowsElements = driver.findElements(By.xpath("//tbody//tr"));
+
+		Map<String, ArrayList<String>> mapData = createMapWithTableData(rowsElements);
+
+		mapData.forEach((K, V) -> System.out.println(K + V));
+	}
+
+	private Map<String, ArrayList<String>> createMapWithTableData(List<WebElement> rdata) {
+
+		int rowsSize = rdata.size();
+
+		Map<String, ArrayList<String>> webTableMapData = new HashMap<String, ArrayList<String>>();
+
+		for (int i = 1; i <= rowsSize; i++) {
+			WebElement structure = driver.findElement(By.xpath("//tbody//tr[" + i + "]//th"));
+			List<WebElement> structureDetails = driver.findElements(By.xpath("//tbody//tr[" + i + "]//td"));
+			webTableMapData.put(structure.getText(),
+					(ArrayList<String>) structureDetails.stream().map(x -> x.getText()).collect(Collectors.toList()));
+		}
+		return webTableMapData;
 	}
 }
